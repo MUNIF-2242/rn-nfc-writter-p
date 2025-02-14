@@ -123,7 +123,7 @@ function WriteNdefScreen() {
                 value={customProfession}
                 onChangeText={setCustomProfession}
                 style={styles.input}
-                placeholder="Enter your profession"
+                placeholder="Enter your profession name"
               />
             </View>
           )}

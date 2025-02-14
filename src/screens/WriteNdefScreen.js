@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, SafeAreaView, Text, ScrollView } from "react-native";
 import { Button, TextInput, Menu } from "react-native-paper";
 import NfcManager from "react-native-nfc-manager";
@@ -28,9 +28,11 @@ function WriteNdefScreen() {
     resetFields,
   } = useContext(NfcContext);
 
+  const [customProfession, setCustomProfession] = useState("");
+
   useEffect(() => {
     return () => {
-      resetFields(); // Clear fields when leaving the screen
+      resetFields();
     };
   }, []);
 
@@ -63,6 +65,7 @@ function WriteNdefScreen() {
                     onPress={() => {
                       setIndustryDropdownValue(option.value);
                       setProfessionDropdownValue("");
+                      setCustomProfession("");
                       setShowIndustryMenu(false);
                     }}
                     title={option.label}
@@ -99,6 +102,10 @@ function WriteNdefScreen() {
                       onPress={() => {
                         setProfessionDropdownValue(option.value);
                         setShowProfessionMenu(false);
+
+                        if (option.value === "Others") {
+                          setCustomProfession("");
+                        }
                       }}
                       title={option.label}
                       style={styles.menuItem}
@@ -108,6 +115,18 @@ function WriteNdefScreen() {
               </ScrollView>
             </Menu>
           </View>
+
+          {professionDropdownValue === "Others" && (
+            <View>
+              <Text style={styles.label}>Enter other profession name</Text>
+              <TextInput
+                value={customProfession}
+                onChangeText={setCustomProfession}
+                style={styles.input}
+                placeholder="Enter your profession"
+              />
+            </View>
+          )}
 
           <Text style={styles.label}>Name</Text>
           <TextInput
@@ -120,7 +139,7 @@ function WriteNdefScreen() {
 
         <TouchableOpacity
           style={styles.readyButton}
-          onPress={() => handleWriteNdef(androidPromptRef)}
+          onPress={() => handleWriteNdef(androidPromptRef, customProfession)}
           activeOpacity={0.7}
         >
           <Text style={styles.readyButtonText}>
@@ -143,7 +162,6 @@ function WriteNdefScreen() {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    //marginTop: 20,
   },
   pad: {
     padding: 20,
@@ -158,12 +176,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: "white",
     backgroundColor: "#E1F5FE",
-  },
-  bottom: {
-    padding: 10,
-    alignItems: "center",
   },
   bgLight: {
     backgroundColor: "#E1F5FE",
@@ -176,28 +189,15 @@ const styles = StyleSheet.create({
   },
   input: {
     marginTop: 10,
-  },
-  menu: {
-    marginTop: 100,
-  },
-  menuScroll: {
-    maxHeight: 400,
-  },
-  menuItem: {
-    paddingVertical: 10,
-    backgroundColor: "#E1F5FE",
-  },
-  input: {
-    marginTop: 10,
     backgroundColor: "#E1F5FE",
   },
   readyButton: {
-    backgroundColor: "#E1F5FE", // Light background for contrast
-    borderRadius: 15, // Rounded corners
-    paddingVertical: 30, // Padding for a button feel
-    paddingHorizontal: 30, // Horizontal padding
-    elevation: 5, // Shadow for Android
-    shadowColor: "#000", // Shadow for iOS
+    backgroundColor: "#E1F5FE",
+    borderRadius: 15,
+    paddingVertical: 30,
+    paddingHorizontal: 30,
+    elevation: 5,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   dropdownButtonText: {
-    color: "#000", // Change this to the desired font color
+    color: "#000",
   },
 });
 

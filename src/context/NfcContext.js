@@ -37,11 +37,10 @@ export const NfcProvider = ({ children }) => {
     setProfessionDropdownValue("");
   };
 
-  const handleWriteNdef = async (androidPromptRef) => {
+  const handleWriteNdef = async (androidPromptRef, customProfession) => {
     if (androidPromptRef && androidPromptRef.current) {
       try {
-        await writeNdef(androidPromptRef); // Write to NFC
-        //resetFields(); // Clear fields
+        await writeNdef(androidPromptRef, customProfession);
       } catch (error) {
         console.error("Error writing NFC: ", error);
       }
@@ -54,14 +53,20 @@ export const NfcProvider = ({ children }) => {
     setEnabled(await NfcManager.isEnabled());
   };
 
-  const writeNdef = async (androidPromptRef) => {
+  const writeNdef = async (androidPromptRef, customProfession) => {
     let scheme = "https://kriyakarak.com/";
+
+    // Use custom profession if "Others" is selected
+    const profession =
+      professionDropdownValue === "Others"
+        ? customProfession
+        : professionDropdownValue;
 
     const fullUrl = `${scheme}${generateSlug(
       industryDropdownValue
-    )}/${generateSlug(professionDropdownValue)}/${generateSlug(value)}`;
+    )}/${generateSlug(profession)}/${generateSlug(value)}`;
 
-    if (!industryDropdownValue || !professionDropdownValue || !value) {
+    if (!industryDropdownValue || !profession || !value) {
       alert("Please fill all fields!");
       return;
     }
@@ -77,7 +82,6 @@ export const NfcProvider = ({ children }) => {
       await NfcManager.ndefHandler.writeNdefMessage(bytes);
       alert("NFC written successfully!");
     } catch (ex) {
-      //  console.error("Error writing NFC: ", ex);
       console.log("Error writing NFC: ", ex);
     } finally {
       NfcManager.cancelTechnologyRequest();

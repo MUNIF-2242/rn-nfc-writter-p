@@ -73,6 +73,7 @@ export const professionDropdownOptions = {
     { label: "Corporate Photographer", value: "Corporate Photographer" },
     { label: "Band Musician & DJ", value: "Band Musician & DJ" },
     { label: "Dancer & Choreographer", value: "Dancer & Choreographer" },
+    { label: "Others", value: "Others" },
   ],
   "CONSULTATION & SPECIALIST": [
     { label: "PR Specialist", value: "PR Specialist" },

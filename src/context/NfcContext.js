@@ -1,4 +1,3 @@
-// NfcContext.js
 import React, { createContext, useState, useEffect } from "react";
 import NfcManager, { Ndef, NfcTech } from "react-native-nfc-manager";
 import { Platform } from "react-native";
@@ -10,12 +9,10 @@ export const NfcProvider = ({ children }) => {
   const [hasNfc, setHasNfc] = useState(null);
   const [enabled, setEnabled] = useState(null);
 
-  // New states for your WriteNdefScreen
   const [value, setValue] = useState("");
   const [industryDropdownValue, setIndustryDropdownValue] = useState("");
   const [professionDropdownValue, setProfessionDropdownValue] = useState("");
 
-  // Dropdown visibility states
   const [showIndustryMenu, setShowIndustryMenu] = useState(false);
   const [showProfessionMenu, setShowProfessionMenu] = useState(false);
 
@@ -56,7 +53,6 @@ export const NfcProvider = ({ children }) => {
   const writeNdef = async (androidPromptRef, customProfession) => {
     let scheme = "https://kriyakarak.com/";
 
-    // Use custom profession if "Others" is selected
     const profession =
       professionDropdownValue === "Others"
         ? customProfession

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 function AndroidPrompt(props, ref) {
-  const { onCancelPress } = props;
+  const { onCancelProps } = props;
   const [_visible, _setVisible] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hintText, setHintText] = useState("");
@@ -70,7 +70,7 @@ function AndroidPrompt(props, ref) {
             style={styles.btn}
             onPress={() => {
               _setVisible(false);
-              onCancelPress();
+              onCancelProps();
             }}
           >
             <Text>CANCEL</Text>

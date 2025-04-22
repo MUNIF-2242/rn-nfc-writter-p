@@ -1,37 +1,42 @@
-// App.js
-
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NfcProvider } from "./context/NfcContext";
-import HomeScreen from "./screens/HomeScreen";
-import WriteNdefScreen from "./screens/WriteNdefScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import LandingScreen from "./Screens/Landing";
+import HomeScreen from "./Screens/Home";
+import PokemonListScreen from "./Screens/PokemonList";
+import PokemonDetailScreen from "./Screens/PokemonDetail";
 
-const Stack = createNativeStackNavigator();
+const HomeStack = createStackNavigator();
 
-function AppNavigator() {
+function Home(props) {
   return (
-    <NfcProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-
-          <Stack.Screen
-            name="Write"
-            component={WriteNdefScreen}
-            options={{
-              headerTitle: "Creative Portal URL Set",
-              headerTitleAlign: "center",
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </NfcProvider>
+    <HomeStack.Navigator headerMode="screen">
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ title: "NFC Pokemon" }}
+      />
+      <HomeStack.Screen
+        name="List"
+        component={PokemonListScreen}
+        options={{ title: "Choose Pokemon" }}
+      />
+    </HomeStack.Navigator>
   );
 }
 
-export default AppNavigator;
+const RootStack = createStackNavigator();
+
+function AppNav(props) {
+  return (
+    <NavigationContainer>
+      <RootStack.Navigator headerMode="none" mode="modal">
+        <RootStack.Screen name="Landing" component={LandingScreen} />
+        <RootStack.Screen name="Home" component={Home} />
+        <RootStack.Screen name="Detail" component={PokemonDetailScreen} />
+      </RootStack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default AppNav;

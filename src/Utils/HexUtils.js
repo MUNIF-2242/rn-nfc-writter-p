@@ -1,8 +1,8 @@
 function strToHex(src) {
-  let result = '';
+  let result = "";
   for (let i = 0; i < src.length; i++) {
     const code = src.charCodeAt(i);
-    result += ('00' + code.toString(16)).slice(-2);
+    result += ("00" + code.toString(16)).slice(-2);
   }
   return result;
 }
@@ -16,16 +16,16 @@ function strToBytes(src) {
 }
 
 function bytesToHex(src) {
-  let result = '';
+  let result = "";
   for (const b of src) {
-    result += ('00' + b.toString(16)).slice(-2);
+    result += ("00" + b.toString(16)).slice(-2);
   }
   return result;
 }
 
 function hexToBytes(hex) {
   if (hex.length % 2 !== 0) {
-    throw new Error('hex string should have even length');
+    throw new Error("hex string should have even length");
   }
 
   const bytes = [];
@@ -37,4 +37,4 @@ function hexToBytes(hex) {
   return bytes;
 }
 
-export {strToHex, strToBytes, bytesToHex, hexToBytes};
+export { strToHex, strToBytes, bytesToHex, hexToBytes };
